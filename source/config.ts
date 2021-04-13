@@ -5,14 +5,6 @@ type StoreType = {
   timerView: boolean;
   hideClock: boolean;
   sla: number;
-  slaStart: {
-    hours: number;
-    minutes: number;
-  };
-  slaEnd: {
-    hours: number;
-    minutes: number;
-  };
   filterPending: boolean;
 };
 
@@ -31,37 +23,7 @@ const schema: {[Key in keyof StoreType]} = {
   },
   sla: {
     type: 'number',
-    default: 3
-  },
-  slaStart: {
-    type: 'object',
-    properties: {
-      hours: {
-        type: 'number'
-      },
-      minutes: {
-        type: 'number'
-      }
-    },
-    default: {
-      hours: 9,
-      minutes: 0
-    }
-  },
-  slaEnd: {
-    type: 'object',
-    properties: {
-      hours: {
-        type: 'number'
-      },
-      minutes: {
-        type: 'number'
-      }
-    },
-    default: {
-      hours: 17,
-      minutes: 0
-    }
+    default: 24
   },
   filterPending: {
     type: 'boolean',

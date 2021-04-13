@@ -39,33 +39,9 @@ async function createTicket(entry: any): Promise<Ticket> {
     ticket.waitingSince = new Date(entry.waitingSince);
   }
 
-  const slaStart = set(new Date(), {
-    hours: await ipcRenderer.invoke('config-get', 'slaStart.hours'),
-    minutes: await ipcRenderer.invoke('config-get', 'slaStart.minutes'),
-    seconds: 0,
-    milliseconds: 0
+  ticket.sla = add(ticket.waitingSince, {
+    hours: await ipcRenderer.invoke('config-get', 'sla')
   });
-  const slaEnd = set(new Date(), {
-    hours: await ipcRenderer.invoke('config-get', 'slaEnd.hours'),
-    minutes: await ipcRenderer.invoke('config-get', 'slaEnd.minutes'),
-    seconds: 0,
-    milliseconds: 0
-  });
-
-  if (ticket.waitingSince < slaStart) {
-    ticket.sla = add(slaStart, {
-      hours: await ipcRenderer.invoke('config-get', 'sla')
-    });
-  } else if (ticket.waitingSince > slaEnd) {
-    ticket.sla = add(slaStart, {
-      days: 1,
-      hours: await ipcRenderer.invoke('config-get', 'sla')
-    });
-  } else {
-    ticket.sla = add(ticket.waitingSince, {
-      hours: await ipcRenderer.invoke('config-get', 'sla')
-    });
-  }
 
   return ticket as Ticket;
 }
